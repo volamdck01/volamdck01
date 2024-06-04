@@ -1,73 +1,104 @@
-[![Packaging status](https://repology.org/badge/tiny-repos/bear-clang.svg)](https://repology.org/project/bear-clang/versions)
-[![GitHub release](https://img.shields.io/github/release/rizsotto/Bear)](https://github.com/rizsotto/Bear/releases)
-[![GitHub Release Date](https://img.shields.io/github/release-date/rizsotto/Bear)](https://github.com/rizsotto/Bear/releases)
-[![Continuous Integration](https://github.com/rizsotto/Bear/workflows/continuous%20integration/badge.svg)](https://github.com/rizsotto/Bear/actions)
-[![Contributors](https://img.shields.io/github/contributors/rizsotto/Bear)](https://github.com/rizsotto/Bear/graphs/contributors)
-[![Gitter](https://img.shields.io/gitter/room/rizsotto/Bear)](https://gitter.im/rizsotto/Bear)
+# knitr
 
-ʕ·ᴥ·ʔ Build EAR  
-===============
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/yihui/knitr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yihui/knitr/actions/workflows/R-CMD-check.yaml)
+[![Check knitr examples](https://github.com/yihui/knitr/actions/workflows/knitr-examples.yaml/badge.svg)](https://github.com/yihui/knitr/actions/workflows/knitr-examples.yaml)
+[![Codecov test coverage](https://codecov.io/gh/yihui/knitr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/yihui/knitr?branch=master)
+[![CRAN release](https://www.r-pkg.org/badges/version/knitr)](https://cran.r-project.org/package=knitr)
+<!-- badges: end -->
 
-Bear is a tool that generates a compilation database for clang tooling.
+The R package **knitr** is a general-purpose literate programming engine,
+with lightweight API's designed to give users full control of the output
+without heavy coding work. It combines many features into one package with
+slight tweaks motivated from my everyday use of Sweave. See the package
+[homepage](https://yihui.org/knitr/) for details and examples. See
+[FAQ's](https://yihui.org/knitr/faq/) for a list of
+frequently asked questions (including where to ask questions).
 
-The [JSON compilation database][JSONCDB] is used in the clang project
-to provide information on how a single compilation unit is processed.
-With this, it is easy to re-run the compilation with alternate programs.
+## Installation
 
-Some build system natively supports the generation of JSON compilation
-database. For projects which does not use such build tool, Bear generates
-the JSON file during the build process.
+You can install the stable version on
+[CRAN](https://cran.r-project.org/package=knitr):
 
-  [JSONCDB]: http://clang.llvm.org/docs/JSONCompilationDatabase.html
+```r
+install.packages('knitr')
+```
 
-How to install
---------------
+You can also install the development version (hourly build) from
+<https://yihui.r-universe.dev>:
 
-Bear is [packaged](https://repology.org/project/bear-clang/versions) for many
-distributions. Check out your package manager. Or [build it](INSTALL.md)
-from source.
+```r
+options(repos = c(
+  yihui = 'https://yihui.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'
+))
 
-How to use
-----------
+install.packages('knitr')
+```
 
-After installation the usage is like this:
+## Motivation
 
-    bear -- <your-build-command>
+While Sweave and related add-on packages like
+[**cacheSweave**](https://cran.r-project.org/package=cacheSweave) and
+[**pgfSweave**](https://cran.r-project.org/package=pgfSweave) are fairly good
+engines for literate programming in R, I often feel my hands are tied.
+For example:
 
-The output file called `compile_commands.json` is saved in the current directory.
+- I stared at the source code of Sweave and wished for hundreds of times,
+  *if only I could easily insert* `[width=.8\textwidth]` *between*
+  `\includegraphics` *and* `{my-plot.pdf}`. (The official way in Sweave is
+  `\setkeys{Gin}` but it is setting a global width, which is unrealistic
+  since we often have to set widths individually; yes, you can use
+  `\setkeys{Gin}` for many times, but why not just provide an option for
+  each chunk?)
+- I wished for many times, *if only I could use graphics devices other
+  than PDF and postscript*; now the dream has come true in the official R,
+  but what I was hoping for was an option as simple as `dev = 'png'` or `dev
+  = 'CairoJPEG'`.
+- I wished multiple plots in a code chunk could be recorded instead of only
+  the last one.
+- I wished there was a way to round the numbers in `\Sexpr{}` other than
+  writing expressions like `\Sexpr{round(x, 3)}` for *each single* `\Sexpr{}`
+- I wished I did not have to `print()` plots from.
+  [**ggplot2**](https://cran.r-project.org/package=ggplot2) and a simple
+  `qplot(x, y)` would just give me a plot in Sweave.
+- I wished users would never need instructions on `Sweave.sty` or run into
+  troubles due to the fact that LaTeX cannot find `Sweave.sty`.
+- I wished **cacheSweave** could print the results of a code chunk even if
+  it was cached.
+- I wished [**brew**](https://cran.r-project.org/package=brew) could support
+  graphics.
+- I wished [**R2HTML**](https://cran.r-project.org/package=R2HTML) could
+  support R code syntax highlighting.
+- ...
 
-For more options you can check the man page or pass `--help` parameter. Note
-that if you want to pass parameter to Bear, pass those _before_ the `--` sign,
-everything after that will be the build command. 
 
-Please be aware that some package manager still ship our old 2.4.x release. 
-In that case please omit the extra `--` sign or consult your local documentation.
+[<img src="http://i.imgur.com/yYw46aF.jpg" align="right" alt="The book Dynamic Documents with R and knitr" />](https://www.amazon.com/dp/1498716962/)
 
-For more, read the man pages or [wiki][WIKI] of the project, which talks about
-limitations, known issues and platform specific usage. 
+The package **knitr** was designed to give the user access to every part of
+the process of dealing with a literate programming document, so there is no
+need to hack at any core components if you want more freedom. I have gone
+through the source code of **pgfSweave** and **cacheSweave** for a couple of
+times and I often feel uncomfortable with the large amount of code copied
+from official R, especially when R has a new version released (I will begin
+to worry if the add-on packages are still up-to-date with the official
+Sweave).
 
-Problem reports
----------------
+## Usage
 
-Before you open a new problem report, please look at the [wiki][WIKI] if your
-problem is a known one with documented workaround. It's also helpful to look
-at older (maybe closed) [issues][ISSUES] before you open a new one.  
+```r
+library(knitr)
+?knit
+knit(input)
+```
 
-If you decided to report a problem, try to give as much context as it would
-help me to reproduce the error you see. If you just have a question about the
-usage, please don't be shy, ask your question in an issue or in [chat][CHAT].
+If options are not explicitly specified, **knitr** will try to guess
+reasonable default settings. A few manuals are available such as the [main
+manual](https://yihui.org/knitr/demo/manual/), and the
+[graphics
+manual](https://yihui.org/knitr/demo/graphics/). For a
+more organized reference, see the [knitr book](https://www.amazon.com/dp/1498716962/).
 
-If you found a bug, but also found a fix for it, please share it with me and
-open a pull request.
+## License
 
-Please follow the [contribution guide][GUIDE] when you do these.
-
-  [ISSUES]: https://github.com/rizsotto/Bear/issues
-  [WIKI]: https://github.com/rizsotto/Bear/wiki
-  [CHAT]: https://gitter.im/rizsotto/Bear
-  [GUIDE]: https://github.com/rizsotto/Bear/blob/master/CONTRIBUTING.md
-
----
-
-Thanks to [JetBrains](https://www.jetbrains.com/?from=Bear)
-for donating product licenses to help develop Bear
+This package is free and open source software, licensed under GPL.
