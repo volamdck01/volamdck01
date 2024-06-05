@@ -1,104 +1,73 @@
-# knitr
+![Dragonwell Logo](https://raw.githubusercontent.com/wiki/dragonwell-project/dragonwell8/images/dragonwell_std_txt_horiz.png)
 
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/yihui/knitr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yihui/knitr/actions/workflows/R-CMD-check.yaml)
-[![Check knitr examples](https://github.com/yihui/knitr/actions/workflows/knitr-examples.yaml/badge.svg)](https://github.com/yihui/knitr/actions/workflows/knitr-examples.yaml)
-[![Codecov test coverage](https://codecov.io/gh/yihui/knitr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/yihui/knitr?branch=master)
-[![CRAN release](https://www.r-pkg.org/badges/version/knitr)](https://cran.r-project.org/package=knitr)
-<!-- badges: end -->
+[Alibaba Dragonwell8 User Guide](https://github.com/dragonwell-project/dragonwell8/wiki/Alibaba-Dragonwell8-User-Guide)
 
-The R package **knitr** is a general-purpose literate programming engine,
-with lightweight API's designed to give users full control of the output
-without heavy coding work. It combines many features into one package with
-slight tweaks motivated from my everyday use of Sweave. See the package
-[homepage](https://yihui.org/knitr/) for details and examples. See
-[FAQ's](https://yihui.org/knitr/faq/) for a list of
-frequently asked questions (including where to ask questions).
+[Alibaba Dragonwell8 Extended Edition Release Notes](https://github.com/dragonwell-project/dragonwell8/wiki/Alibaba-Dragonwell8-Extended-Edition-Release-Notes)
 
-## Installation
+[Alibaba Dragonwell8 Standard Edition Release Notes](https://github.com/dragonwell-project/dragonwell8/wiki/Alibaba-Dragonwell8-Standard-Edition-Release-Notes)
 
-You can install the stable version on
-[CRAN](https://cran.r-project.org/package=knitr):
+# Introduction
 
-```r
-install.packages('knitr')
+Over the years, Java has proliferated in Alibaba. Many applications are written in Java and many our Java developers have written more than one billion lines of Java code.
+
+Alibaba Dragonwell, as a downstream version of OpenJDK, is the in-house OpenJDK implementation at Alibaba optimized for online e-commerce, financial, logistics applications running on 100,000+ servers. Alibaba Dragonwell is the engine that runs these distributed Java applications in extreme scaling.
+
+The current release supports Linux/x86_64 platform only.
+
+Alibaba Dragonwell is clearly a "friendly fork" under the same licensing terms as the upstream OpenJDK project. Alibaba is committed to collaborate closely with OpenJDK community and intends to bring as many customized features as possible from Alibaba Dragonwell to the upstream.
+
+# Using Alibaba Dragonwell
+
+Alibaba Dragonwell JDK currently supports Linux/x86_64 platform only.
+
+### Installation
+
+##### Option 1, Download and install pre-built Alibaba Dragonwell
+
+* You may download a pre-built Alibaba Dragonwell JDK from its GitHub page:
+https://github.com/dragonwell-project/dragonwell8/releases.
+* Uncompress the package to the installation directory.
+
+##### Option 2, Install via YUM
+
+Alibaba Dragonwell is officially supported and maintained in Alibaba Cloud Linux 2 (Aliyun Linux 2) YUM repository, and this repo should be also compatible with Aliyun Linux 17.1, Red Hat Enterprise Linux 7 and CentOS 7.
+
+* For users running Alibaba Cloud Linux 2 OS, you should be able to install Alibaba Dragonwell by simply running: `sudo yum install -y java-1.8.0-alibaba-dragonwell`;
+* For users running with aforementioned compatible distros, place a new repository file under `/etc/yum.repos.d` (e.g.: `/etc/repos.d/alinux-plus.repo`) with contents as follows, then you should be able to install Alibaba Dragonwell by executing: `sudo yum install -y java-1.8.0-alibaba-dragonwell`:
+```
+# plus packages provided by Aliyun Linux dev team
+[plus]
+name=AliYun-2.1903 - Plus - mirrors.aliyun.com
+baseurl=http://mirrors.aliyun.com/alinux/2.1903/plus/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.aliyun.com/alinux/RPM-GPG-KEY-ALIYUN
 ```
 
-You can also install the development version (hourly build) from
-<https://yihui.r-universe.dev>:
+### Enable Alibaba Dragonwell for Java applications
 
-```r
-options(repos = c(
-  yihui = 'https://yihui.r-universe.dev',
-  CRAN = 'https://cloud.r-project.org'
-))
+To enable Alibaba Dragonwell JDK for your application, simply set `JAVA_HOME` to point to the installation directory of Alibaba Dragonwell. If you installed Dragonwell JDK via YUM, follow the instructions prompted from post-install outputs, e.g.:
 
-install.packages('knitr')
+```
+=======================================================================
+Alibaba Dragonwell is installed to:
+    /opt/alibaba/java-1.8.0-alibaba-dragonwell-8.0.0.212.b04-1.al7
+You can set Alibaba Dragonwell as default JDK by exporting the
+following ENV VARs:
+$ export JAVA_HOME=/opt/alibaba/java-1.8.0-alibaba-dragonwell-8.0.0.212.b04-1.al7
+$ export PATH=${JAVA_HOME}/bin:$PATH
+=======================================================================
 ```
 
-## Motivation
+# Acknowledgement
 
-While Sweave and related add-on packages like
-[**cacheSweave**](https://cran.r-project.org/package=cacheSweave) and
-[**pgfSweave**](https://cran.r-project.org/package=pgfSweave) are fairly good
-engines for literate programming in R, I often feel my hands are tied.
-For example:
+Special thanks to those who have made contributions to Alibaba's internal JDK builds.
 
-- I stared at the source code of Sweave and wished for hundreds of times,
-  *if only I could easily insert* `[width=.8\textwidth]` *between*
-  `\includegraphics` *and* `{my-plot.pdf}`. (The official way in Sweave is
-  `\setkeys{Gin}` but it is setting a global width, which is unrealistic
-  since we often have to set widths individually; yes, you can use
-  `\setkeys{Gin}` for many times, but why not just provide an option for
-  each chunk?)
-- I wished for many times, *if only I could use graphics devices other
-  than PDF and postscript*; now the dream has come true in the official R,
-  but what I was hoping for was an option as simple as `dev = 'png'` or `dev
-  = 'CairoJPEG'`.
-- I wished multiple plots in a code chunk could be recorded instead of only
-  the last one.
-- I wished there was a way to round the numbers in `\Sexpr{}` other than
-  writing expressions like `\Sexpr{round(x, 3)}` for *each single* `\Sexpr{}`
-- I wished I did not have to `print()` plots from.
-  [**ggplot2**](https://cran.r-project.org/package=ggplot2) and a simple
-  `qplot(x, y)` would just give me a plot in Sweave.
-- I wished users would never need instructions on `Sweave.sty` or run into
-  troubles due to the fact that LaTeX cannot find `Sweave.sty`.
-- I wished **cacheSweave** could print the results of a code chunk even if
-  it was cached.
-- I wished [**brew**](https://cran.r-project.org/package=brew) could support
-  graphics.
-- I wished [**R2HTML**](https://cran.r-project.org/package=R2HTML) could
-  support R code syntax highlighting.
-- ...
+# Publications
 
+Technologies included in Alibaba Dragonwell have been published in following papers
 
-[<img src="http://i.imgur.com/yYw46aF.jpg" align="right" alt="The book Dynamic Documents with R and knitr" />](https://www.amazon.com/dp/1498716962/)
+* ICSE'19：https://2019.icse-conferences.org/event/icse-2019-technical-papers-safecheck-safety-enhancement-of-java-unsafe-api
 
-The package **knitr** was designed to give the user access to every part of
-the process of dealing with a literate programming document, so there is no
-need to hack at any core components if you want more freedom. I have gone
-through the source code of **pgfSweave** and **cacheSweave** for a couple of
-times and I often feel uncomfortable with the large amount of code copied
-from official R, especially when R has a new version released (I will begin
-to worry if the add-on packages are still up-to-date with the official
-Sweave).
+* ICPE'18: https://dl.acm.org/citation.cfm?id=3186295
 
-## Usage
-
-```r
-library(knitr)
-?knit
-knit(input)
-```
-
-If options are not explicitly specified, **knitr** will try to guess
-reasonable default settings. A few manuals are available such as the [main
-manual](https://yihui.org/knitr/demo/manual/), and the
-[graphics
-manual](https://yihui.org/knitr/demo/graphics/). For a
-more organized reference, see the [knitr book](https://www.amazon.com/dp/1498716962/).
-
-## License
-
-This package is free and open source software, licensed under GPL.
+* ICSE'18 SEIP  https://www.icse2018.org/event/icse-2018-software-engineering-in-practice-java-performance-troubleshooting-and-optimization-at-alibaba
