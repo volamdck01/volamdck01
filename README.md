@@ -1,105 +1,134 @@
-# News
+# 🎃 HacktoberFest Starter Project 🎃
 
-https://docs.robinhood.com/crypto/trading/
+** __Oct 24th, 2017 Update:__ THIS REPO IS TEMPORARILY __NOT MERGING NEW PRs__ until the CONTRIBUTORS.md file is sorted! Thanks for your patience! **
 
-I'm feeling in a mood to work on this again. I'll be trying to fill any blanks found in Robinhood's official docs. First, I'll be talking to myself over in https://github.com/sanko/Robinhood/discussions while I work through v1 of their crypto API and later documenting rough edges in these docs.
+Use this project to make your first contribution to an open source project on GitHub. Practice making your first pull request to a public repository before doing the real thing!
 
--------
+Celebrate [Hacktoberfest](https://hacktoberfest.digitalocean.com/) by getting involved in the open source community by completing some simple tasks in this project.
 
-# Unofficial Documentation of Robinhood Trade's Private API
+This repository is open to all members of the GitHub community. Any member may contribute to this project without being a collaborator.
 
-Table of Contents:
+[https://alicewonderland.github.io/hacktoberfest/](https://alicewonderland.github.io/hacktoberfest/)
 
-- [Table of Contents](#table-of-contents)
-- [Introduction](#introduction)
-	- [Development](#development)
-- [API Security](#api-security)
-- [API Error Reporting](#api-error-reporting)
-- [Pagination](#pagination)
-	- [Semi-Pagination](#semi-pagination)
+## What is Hacktoberfest?
+A month-long celebration from October 1st - 31st sponsored by [Digital Ocean](https://hacktoberfest.digitalocean.com/) and [GitHub](https://github.com/blog/2433-celebrate-open-source-this-october-with-hacktoberfest) to get people involved in [Open Source](https://github.com/open-source). Create your very first pull request to any public repository on GitHub and contribute to the open source developer community.
 
-## See also
+[https://hacktoberfest.digitalocean.com/](https://hacktoberfest.digitalocean.com/)
 
-- [Authentication.md](Authentication.md) for methods related to user authentication, password recovery, etc.
-- [Banking.md](Banking.md) for bank accounts & ACH transfers methods
-- [Order.md](Order.md) for order-related functions (placing, cancelling, listing previous orders, etc.)
-- [Options.md](Options.md) for options related endpoints
-- [Quote.md](Quote.md) for stock quotes
-- [Fundamentals.md](Fundamentals.md) for basic, fundamental data
-- [Instrument.md](Instrument.md) for internal reference to financial instruments
-- [Watchlist.md](Watchlist.md) for watchlists management
-- [Account.md](Account.md) talks about gathering and modifying user and account information
-- [Settings.md](Settings.md) covers notifications and other settings
-- [Markets.md](Markets.md) describes the API for getting basic info about specific exchanges themselves
-- [Referrals.md](Referrals.md) is all about account referrals
-- [Statistics.md](Statistics.md) exposes the new social/statistical endpoints
-- [Tags.md](Tags.md) exposes the new categorizing endpoints
+## How to contribute to this project
+Here are 3 quick and painless ways to contribute to this project:
 
-Things I have yet to organize are in [Unsorted.md](Unsorted.md)
+* Add your name to the `CONTRIBUTORS.md` file
+* Add a profile page to the `profiles` directory
+* Create a simple "Hello, World" script in a language of your choice
 
-# Introduction
+Choose one or all 3, make a pull request for your work and wait for it to be merged!
 
-[Robinhood](http://robinhood.com/) is a commission-free, online securities brokerage. As you would expect, being an online service means everything is handled through a request that is made to a specific URL.
+## Getting started
+* Fork this repository (Click the Fork button in the top right of this page, click your Profile Image)
+* Clone your fork down to your local machine
 
-# API Security
-
-The HTTPS protocol is used to access the Robinhood API. Transactions require security because most calls transmit actual account informaion. SSL Pinning is used in the official Android and iOS apps to prevent MITM attacks; you would be wise to do the same at the very least.
-
-Calls to API endpoints make use of two different levels of authentication:
-
-1. **None**: No authentication. Anyone can query the method.
-2. **Token**: Requires an authorization token generated with a call to [log in](Authentication.md#logging-in).
-
-Calls which require no authentication are generally informational ([quote gathering](Quote.md#quote-methods), [securities lookup](#instrument-methods), etc.).
-
-Authorized calls require an `Authorization` HTTP Header with the authentication type set as `Token` (Example: `Authorization: Token 40charauthozationtokenherexxxxxxxxxxxxxx`).
-
-# API Error Reporting
-
-The API reports incorrect data or improper use with HTTP status codes and JSON objects returned as body content. Some that I've run into include:
-
-| HTTP Status | Key                | Value | What I Did Wrong |
-|-------------|--------------------|-------|------------------|
-| 400         | `non_field_errors` | `["Unable to log in with provided credentials."]` | Attempted to [log in](#logging-in) with incorrect username/password |
-| 400         | `password`         | `["This field may not be blank."]`                | Attempted to [log in](#logging-in) without a password |
-| 401         | `detail`           | `["Invalid token."]`                              | Attempted to use cached token after [logging out](#logging-out) |
-| 400         | `password`           | `["This password is too short. It must contain at least 10 characters.", "This password is too common."]`                                                       | Attempted to [change my password](#password-reset) to `password` |
-
-...you get the idea. Letting you know exactly what went wrong makes the API almost self-documenting so thanks Robinhood.
-
-# Pagination
-
-Some data is returned from the Robinhood API as paginated data with `next` and `previous` cursors already in URL form.
-
-If your call returns paginated data, it will look like this call to `https://api.robinhood.com/instruments/`:
-
-```
-{
-    "previous": null,
-    "results": [{
-        "splits" : "https://api.robinhood.com/instruments/42e07e3a-ca7a-4abc-8c23-de49cb657c62/splits/",
-        "margin_initial_ratio" : "1.0000",
-        "url" : "https://api.robinhood.com/instruments/42e07e3a-ca7a-4abc-8c23-de49cb657c62/",
-        "quote" : "https://api.robinhood.com/quotes/SBPH/",
-        "symbol" : "SBPH",
-        "bloomberg_unique" : "EQ0000000028928752",
-        "list_date" : null,
-        "fundamentals" : "https://api.robinhood.com/fundamentals/SBPH/",
-        "state" : "active",
-        "tradeable" : true,
-        "maintenance_ratio" : "1.0000",
-        "id" : "42e07e3a-ca7a-4abc-8c23-de49cb657c62",
-        "market" : "https://api.robinhood.com/markets/XNAS/",
-        "name" : "Spring Bank Pharmaceuticals, Inc. Common Stock"
-    },
-        ...
-    ],
-    "next": "https://api.robinhood.com/instruments/?cursor=cD04NjUz"
-}
+```markdown
+git clone https://github.com/your-username/hacktoberfest.git
 ```
 
-To get the next page of results, just use the `next` URL.
+* Create a branch
 
-## Semi-Pagination
+```markdown
+git checkout -b branch-name
+```
 
-Some data is returned as a list of `results` as if they were paginate but the API doesn't supply us with `previous` or `next` keys.
+* Make your changes (choose from any task below)
+* Commit and push
+
+```markdown
+git add .
+git commit -m 'Commit message'
+git push origin branch-name
+```
+
+* Create a new pull request from your forked repository (Click the `New Pull Request` button located at the top of your repo)
+* Wait for your PR review and merge approval!
+* __Star this repository__ if you had fun!
+
+## Choose from these tasks
+### 1. Add your name
+Add your name to the `CONTRIBUTORS.md` file using the below convention:
+
+```markdown
+#### Name: [YOUR NAME](GitHub link)
+- Place: City, State, Country
+- Bio: Who are you?
+- GitHub: [GitHub account name](GitHub link)
+```
+
+### 2. Add a profile page
+Add a `Your_Name.md` file to the `profiles` directory. Use any combination of content and Markdown you'd like. Here is an example:
+
+```markdown
+# Your Name
+
+### Location
+
+Your City/Country
+
+### Academics
+
+Your School
+
+### Interests
+
+- Some Things You Like
+
+### Development
+
+- Inventor of the My Pillow
+
+### Projects
+
+- [My Project](GitHub Link) Short Description
+
+### Profile Link
+
+[Your Name](GitHub Link)
+```
+
+### 3. Create a `Hello, World!` Script
+Add a `hello_world_yourusername.xx` script to the `scripts` directory in any language of your choice! Here is an example:
+
+```Javascript
+// LANGUAGE: Javascript
+// ENV: Node.js
+// AUTHOR: Alice Chuang
+// GITHUB: https://github.com/AliceWonderland
+
+console.log('Hello, World!');
+```
+
+Name the file `hello_world_yourusername.xx`. e.g., `hello_world_alicewonderland.js` or `hello_world_alicewonderland.py`.
+
+Don't forget to include the comments as seen above. Feel free to include additional information about the language you choose in your comments too! Like a link to a helpful introduction or tutorial. 
+
+Here is my `hello_world` example: [hello_world_alicewonderland.js](https://github.com/AliceWonderland/hacktoberfest/blob/master/scripts/hello_world_alicewonderland.js)
+
+## BONUS!
+* See profiles submitted by fellow coders from around the globe ... from Kathmandu to Copenhagen.
+* Discover some obscure to new and trending languages ... from BrainFuck to Groovy.
+* Check out some very creative ways to print out a "Hello, World!" string.
+
+## Reference links
+Here is a great tutorial for creating your first pull request by [Roshan Jossey](https://github.com/Roshanjossey):
+[https://github.com/Roshanjossey/first-contributions](https://github.com/Roshanjossey/first-contributions)
+
+Managing your Forked Repo: [https://help.github.com/articles/fork-a-repo/](https://help.github.com/articles/fork-a-repo/)
+
+Syncing a Fork: [https://help.github.com/articles/syncing-a-fork/](https://help.github.com/articles/syncing-a-fork/)
+
+Keep Your Fork Synced: [https://gist.github.com/CristinaSolana/1885435](https://gist.github.com/CristinaSolana/1885435)
+
+Checkout this list for README examples - Awesome README [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+
+Github-Flavored Markdown [https://guides.github.com/features/mastering-markdown/](https://guides.github.com/features/mastering-markdown/)
+
+## Additional references added by contributors
+GitHub license explained [https://choosealicense.com](https://choosealicense.com)
