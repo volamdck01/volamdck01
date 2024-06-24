@@ -1,117 +1,114 @@
-# Content & Contribution
+![](assets/angel_logo.png)
 
-A place where you can actively contribute to [robinwieruch.de](https://robinwieruch.de). 
+[![license](http://img.shields.io/badge/license-Apache2.0-brightgreen.svg?style=flat)](https://github.com/Angel-ML/angel/blob/branch-3.2.0/LICENSE.TXT)
+[![Release Version](https://img.shields.io/badge/release-3.2.0-red.svg)](https://github.com/tencent/angel/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tencent/angel/pulls)
+[![Download Code](https://img.shields.io/badge/download-zip-green.svg)](https://github.com/Angel-ML/angel/archive/refs/heads/branch-3.2.0.zip)
 
-* Improve any blog post by editing the file directly in this GitHub repository.
-* Write a new guest blog post by creating a new file in this GitHub repository and follow the "Guidelines for Guest Bloggers" below. Get in touch with me before you start writing an entire article :)
+[(ZH-CN Version)](./README_CN.md)
 
-## Guidelines for Guest Bloggers
+**Angel** is a high-performance distributed machine learning and graph computing platform based on the philosophy of Parameter Server. It is tuned for performance with big data from Tencent and has a wide range of applicability and stability, demonstrating increasing advantage in handling higher dimension model. Angel is jointly developed by Tencent and Peking University, taking account of both high availability  in industry and innovation in academia.
 
-### Folder/Files
+With model-centered core design concept, **Angel** partitions parameters of complex models into multiple parameter-server nodes, and implements a variety of machine learning algorithms and graph algorithms using efficient model-updating interfaces and functions, as well as flexible consistency model for synchronization.
 
-Just create a new folder for your blog post. The folder's name will be the URI for the blog post. In this folder, you can create your markdown file with the text and use images from a folder next to it:
+**Angel** is developed with **Java** and **Scala**.  It supports running on **Yarn**. With **PS Service** abstraction, it supports **Spark on Angel**.  Graph computing and deep learning frameworks support is under development and will be released in the future.
 
-```
-my-blog-post/
--- index.md
--- images
----- my-image.jpg
-```
+We welcome everyone interested in machine learning or graph computing to contribute code, create issues or pull requests. Please refer to  [Angel Contribution Guide](https://github.com/Tencent/angel/blob/master/CONTRIBUTING.md) for more detail.
 
-### Frontmatter
+## Introduction to Angel
 
-You can leave out all the frontmatter (e.g. title, description) that I use for my blog posts. I can add these later myself.
+* [Architecture](./docs/overview/architecture_en.md)
+* [Code Framework](./docs/overview/code_framework_en.md)
+* [Design](./docs/overview/design_philosophy_en.md)
+* [Spark on Angel](./docs/overview/spark_on_angel_en.md)
+  * [Machine Learning](./docs/overview/spark_on_angel_en.md)
+  * [Graph Computing](./docs/overview/angel_graph_sona_en.md)
 
-### Code
+## Design
 
-Don't use images for code. Instead use a code snippet the following way:
+- [Model Partitioner](./docs/design/model_partitioner_en.md)
+- [SyncController](./docs/design/sync_controller_en.md)
+- [psFunc](./docs/design/psfFunc_en.md)
+- [Core API](./docs/apis/core_api_en.md)
 
-````
-```javascript
-const helloWorld = "Hello World!";
-```
-````
 
-If you want to highlight changes in the code, that's what I usually do in my tutorials, then you can do it by providing the numbers of lines you want to highlight:
+## Quick Start
 
-````
-```javascript{3}
-const helloWorld = "Hello World!";
+* [Quick Start Example](./docs/tutorials/spark_on_angel_quick_start_en.md)
 
-console.log(helloWorld);
-```
-````
+## Deployment
 
-If you move around from file to file in your tutorial, don't forget to mention the place where you edit/create the next code snippet. Something like:
+* [Compilation Guide](./docs/deploy/source_compile_en.md)
+* [Running on Local](./docs/deploy/local_run_en.md)
+* [Running on Yarn](./docs/deploy/run_on_yarn_en.md)
+* [Configuration Details](./docs/deploy/config_details_en.md)
+* [Resource Configuration Guide](./docs/deploy/resource_config_guide_en.md)
 
-Now we are going to implement user model in the *src/models/user.js* file:
+## Programming Guide
 
-````
-```javascript
-const user = createModel('user');
-```
-````
+* [Spark on Angel Programming Guide](./docs/programmers_guide/spark_on_angel_programing_guide_en.md)
 
-### Images
+## Algorithm
 
-Don't use images for code. Instead use code snippets. If you want to have images in the blog post, add them in at least 1024x768 resolution preferable in .jpg. In the article, reference the image with a proper alt text:
+- [**Angel or Spark On Angel？**](./docs/algo/angel_or_spark_on_angel.md)
+- [**Algorithm Parameter Description**](./docs/algo/model_config_details.md)
+- **Angel**
+  - **Traditional Machine Learning Methods**
+    - [Logistic Regression(LR)](./docs/algo/lr_on_angel_en.md)
+    - [Support Vector Machine(SVM)](./docs/algo/svm_on_angel_en.md)
+    - [Factorization Machine(FM)](./docs/algo/fm_on_angel.md)
+    - [Linear Regression](./docs/algo/linear_on_angel_en.md)
+    - [Robust Regression](./docs/algo/robust_on_angel_en.md)
+    - [Softmax Regression](./docs/algo/softmax_on_angel_en.md)
+    - [KMeans](./docs/algo/kmeans_on_angel_en.md)
+    - [GBDT](./docs/algo/gbdt_on_angel_en.md)
+    - [LDA\*](./docs/algo/lda_on_angel_en.md) ([WarpLDA](./docs/algo/warp_lda_on_angel.md))
+- **Spark on Angel**
+  - **Angel Mllib**
+    - [FM](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/recommendation.md)
+    - [DeepFM](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/recommendation.md)
+    - [DeepAndWide](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/recommendation.md)
+    - [DCN](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/recommendation.md)
+    - [XDeepFM](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/recommendation.md)
+    - [AttentionFM](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/recommendation.md)
+    - [PNN](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/recommendation.md)
+    - [FTRL](./docs/algo/ftrl_lr_spark.md)
+    - [Logistic Regression(LR)](./docs/algo/sona/lr_sona.md)
+    - [FTRLFM](./docs/algo/ftrl_fm_spark_en.md)
+    - [GBDT](./docs/algo/sona/feature_gbdt_sona.md)
+  - **Angel Graph**
+    - [PageRank](./docs/algo/sona/pagerank_on_sona_en.md)
+    - [KCORE](./docs/algo/sona/kcore_sona_en.md)
+    - [HIndex](./docs/algo/sona/hindex_sona_en.md)
+    - [Closeness](./docs/algo/sona/closeness_sona_en.md)
+    - [CommonFriends](./docs/algo/sona/commonfriends_sona_en.md)
+    - [ConnectedComponents](./docs/algo/sona/CC_sona_en.md)
+    - [TriangleCountingUndirected](./docs/algo/sona/triangle_count_undirected_en.md)
+    - [Louvain](./docs/algo/sona/louvain_sona_en.md)
+    - [LPA](./docs/algo/sona/LPA_sona_en.md)
+    - [LINE](./docs/algo/sona/line_sona_en.md)
+    - [Word2Vec](./docs/algo/sona/word2vec_sona_en.md)
+    - [GraphSage](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/graph.md)
+    - [GCN](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/graph.md)
+    - [DGI](https://github.com/Angel-ML/PyTorch-On-Angel/blob/branch-0.2.0/docs/graph.md)
 
-```
-![my image alt text](./images/my-image.jpg)
-```
+## Community
+* Mailing list: angel-tsc@lists.deeplearningfoundation.org
+* Angel homepage in Linux FD: https://angelml.ai/
+* [Committers & Contributors](./COMMITTERS.md)
+* [Contributing to Angel](./CONTRIBUTING.md)
+* [Roadmap](https://github.com/Angel-ML/angel/wiki/Roadmap)
 
-Image files are placed next to the blog post's markdown file.
+## FAQ
+* [Angel FAQ](https://github.com/Tencent/angel/wiki/Angel%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
 
-### Command Line vs. GUI
-
-There are many tutorials out there that are using lots of images to show a GUI where they do their configuration. I'd like to use as few images as possibles and encourage people to use more often their command line instead. If the a GUI needs to be shown, then an image can be used though.
-
-### Code Formatting
-
-I use [Prettier](https://www.robinwieruch.de/how-to-use-prettier-vscode/) in my projects which helps me to keep all my code snippets equally formatted for my tutorials. That's my default configuration:
-
-```
-{
-  "semi": true,
-  "trailingComma": "all",
-  "singleQuote": true,
-  "printWidth": 70
-}
-```
-
-### Headlines
-
-* h1 headline translates to `# My Headline` in markdown
-* h2 headline translates to `## My Secondary Headline` in markdown
-
-My articles usually follow the same structure with optional `## Secondary Headlines` in between:
-
-```
-Be clear about the motivation of this article ...
-
-# My Headline
-
-# My other Headline
-
-## My Secondary Headline
-
-<Divider />
-
-Outro
-```
-
-### Links
-
-Links can be used the following way:
-
-```
-[my article name](url)
-```
-
-### Italics
-
-I usually use italics with `*` for folders and files like `src/models/user.index/js` or `src/`.
-
-### Bold
-
-I usually use bold with `**` to point out the importance of something or to highlight a specific topic in a paragraph.
+## Papers
+  1. [PaSca: A Graph Neural Architecture Search System under the Scalable Paradigm](https://dl.acm.org/doi/pdf/10.1145/3485447.3511986). WWW, 2022
+  2. [Graph Attention Multi-Layer Perceptron](https://dl.acm.org/doi/pdf/10.1145/3534678.3539121). KDD, 2022
+  3. [Node Dependent Local Smoothing for Scalable Graph Learning](https://proceedings.neurips.cc/paper/2021/file/a9eb812238f753132652ae09963a05e9-Paper.pdf). NeurlPS, 2021
+  4. [PSGraph: How Tencent trains extremely large-scale graphs with Spark?](https://conferences.computer.org/icde/2020/pdfs/ICDE2020-5acyuqhpJ6L9P042wmjY1p/290300b549/290300b549.pdf).ICDE, 2020.
+  5. [DimBoost: Boosting Gradient Boosting Decision Tree to Higher Dimensions](https://dl.acm.org/citation.cfm?id=3196892). SIGMOD, 2018.
+  6. [LDA*: A Robust and Large-scale Topic Modeling System](http://www.vldb.org/pvldb/vol10/p1406-yu.pdf). VLDB, 2017
+  7. [Heterogeneity-aware Distributed Parameter Servers](http://net.pku.edu.cn/~cuibin/Papers/2017%20sigmod.pdf). SIGMOD, 2017
+  8. [Angel: a new large-scale machine learning system](http://net.pku.edu.cn/~cuibin/Papers/2017NSRangel.pdf). National Science Review (NSR), 2017
+  9. [TencentBoost: A Gradient Boosting Tree System with Parameter Server](http://net.pku.edu.cn/~cuibin/Papers/2017%20ICDE%20boost.pdf).	ICDE, 2017
