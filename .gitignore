@@ -1,33 +1,13 @@
-# Generic files
-*.user*
-*~
-*.swp
+.ipynb_checkpoints
+.pytest_cache
 *.pyc
-
-# Build directories
-/build
-/build-*
-/.vs
-
-# Build files
-*.a
-*.dylib
-*.dll
-*.lib
-*.exe
-*.o
-*.so
-CMakeCache.txt
-CMakeFiles
-CMakeSettings.json
-CMakeUserPresets.json
-compile_commands.json
-/.cache
-/.vscode
-cmake_install.cmake
-hle-bios.bin
-version.c
-
-# Runtime generated cruft
-*.sav
-*.ss0
+tests/*.csv
+*.ipynb
+.venv
+.DS_Store
+docs/content/*.md
+!docs/content/_index.md
+!docs/content/*.ipynb
+dist
+public
+.vscode
